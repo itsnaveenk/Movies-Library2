@@ -6,6 +6,7 @@ import com.naveenk.Movies_Library2.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -14,8 +15,9 @@ import java.util.HashMap;
 public class UserAuthenticationService {
     @Autowired
     UserRepo userRepo;
+
     @Autowired
-    UserMapper userMapper;
+    BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
     private AuthenticationManager authenticationManager;
@@ -23,8 +25,12 @@ public class UserAuthenticationService {
     private JwtServiceImpl jwtServiceImpl;
 
     public User register(RegisterDetails registerDetails) {
+        User user = new User();
+        user.setUsername(registerDetails.getUsername());
+        user.setEmail(registerDetails.getEmail());
+        user.setPassword(bCryptPasswordEncoder.encode(registerDetails.getPassword()));
 
-        return userRepo.save(userMapper.mapper1(registerDetails));
+        return userRepo.save(user);
     }
 
     public LoginDetailsRes login(LoginDetailsReq loginDetailsReq){
