@@ -1,5 +1,6 @@
 package com.naveenk.Movies_Library2.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -30,9 +31,9 @@ public class User implements UserDetails {
 
     private Role role = Role.USER;
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "user")
     private List<MovieList> movieLists;
-
 
 
 
