@@ -1,5 +1,7 @@
 package com.naveenk.Movies_Library2.controller;
 
+import com.naveenk.Movies_Library2.mappings.ListInfo;
+import com.naveenk.Movies_Library2.repository.MovieListRepo;
 import com.naveenk.Movies_Library2.service.JwtServiceImpl;
 import com.naveenk.Movies_Library2.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -11,7 +13,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/user")
@@ -20,6 +24,9 @@ public class UserController {
     UserService userService;
     @Autowired
     private final JwtServiceImpl jwtServiceImpl;
+
+    @Autowired
+    private MovieListRepo movieListRepo;
 
     public UserController(JwtServiceImpl jwtServiceImpl) {
         this.jwtServiceImpl = jwtServiceImpl;
@@ -42,5 +49,14 @@ public class UserController {
         }
 
         return null;
+    }
+
+
+    @GetMapping("/lists")
+    public ResponseEntity<List<ListInfo>> getLists() {
+        List<ListInfo> lists = movieListRepo.findAll().stream()
+                .map(movieList -> new ListInfo(movieList.getId(), movieList.getName()))
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(lists);
     }
 }

@@ -18,4 +18,12 @@ public class OmdbService {
         System.out.println(forEntity);
         return forEntity;
     }
+
+    public ResponseEntity<?> searchById(String id) {
+        String url = String.format("http://www.omdbapi.com/?apikey=%s&i=%s", apiKey, id);
+        RestTemplate restTemplate = new RestTemplate();
+        final ResponseEntity<Map> forEntity = restTemplate.getForEntity(url, Map.class);
+        System.out.println(forEntity);
+        return forEntity;
+    }
 }

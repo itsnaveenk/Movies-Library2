@@ -4,6 +4,7 @@ import lombok.Data;
 
 @Data
 public class AddRemoveMovieFromListReq {
-    private String listName;
-    private String movieID;
+    private String listId;
+    private String movieId;
+
 }
