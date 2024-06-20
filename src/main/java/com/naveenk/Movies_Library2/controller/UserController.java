@@ -7,6 +7,7 @@ import com.naveenk.Movies_Library2.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,13 +34,13 @@ public class UserController {
     }
 
     @GetMapping("/hello")
-    public String hello(){
+    public String hello() {
 
         return "hello";
     }
 
     @PostMapping("/fetchusername")
-    public ResponseEntity<Map<String, String>> fetchUserName(HttpServletRequest request){
+    public ResponseEntity<Map<String, String>> fetchUserName(HttpServletRequest request) {
         String authHeader = request.getHeader("Authorization");
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             String token = authHeader.substring(7); // Extract the token
@@ -51,12 +52,21 @@ public class UserController {
         return null;
     }
 
-
+    //
+//    @GetMapping("/lists")
+//    public ResponseEntity<List<ListInfo>> getLists() {
+//        List<ListInfo> lists = movieListRepo.findAll().stream()
+//                .map(movieList -> new ListInfo(movieList.getId(), movieList.getName()))
+//                .collect(Collectors.toList());
+//        return ResponseEntity.ok(lists);
+//    }
     @GetMapping("/lists")
     public ResponseEntity<List<ListInfo>> getLists() {
-        List<ListInfo> lists = movieListRepo.findAll().stream()
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        List<ListInfo> lists = movieListRepo.findByUsername(username).stream()
                 .map(movieList -> new ListInfo(movieList.getId(), movieList.getName()))
                 .collect(Collectors.toList());
         return ResponseEntity.ok(lists);
     }
+
 }
