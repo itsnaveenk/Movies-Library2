@@ -10,7 +10,7 @@ import java.util.Map;
 @Service
 public class OmdbService {
 
-    private String apiKey = "b9bdc367";
+    private String apiKey = "API_KEY";
 
     public ResponseEntity<?> searchMovies(String title) {
         final ResponseEntity<Map> forEntity;
