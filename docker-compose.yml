@@ -10,23 +10,19 @@ services:
       MYSQL_USER: springuser
       MYSQL_PASSWORD: springpassword
     ports:
-      - "3307:3306"
+      - "3307:3307"
     volumes:
       - mysql-data:/var/lib/mysql
 
-  Movies-Library2:
-    image: springbootapp:latest
+  movies-library2:
+    build: .
     container_name: Movies-Library2-container
-    build:
-      context: .
-      dockerfile: Dockerfile
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/moviesLibrary2
       SPRING_DATASOURCE_USERNAME: springuser
       SPRING_DATASOURCE_PASSWORD: springpassword
-#      SPRING_JPA_HIBERNATE_DDL_AUTO: update
     ports:
-      - "8989:8989"
+      - "8080:8080"
     depends_on:
       - mysql
 

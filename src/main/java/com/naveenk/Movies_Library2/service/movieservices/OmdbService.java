@@ -1,5 +1,6 @@
 package com.naveenk.Movies_Library2.service.movieservices;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
@@ -10,7 +11,8 @@ import java.util.Map;
 @Service
 public class OmdbService {
 
-    private String apiKey = "API_KEY";
+    @Value("${API}")
+    private String apiKey;
 
     public ResponseEntity<?> searchMovies(String title) {
         final ResponseEntity<Map> forEntity;
